@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+h1{
+ font-family: 'Nunito', sans-serif;
+ font-size: 1.3em;
+ font-weight: bold;
+ margin-top: .2em;
+ cursor: pointer;
+}
+
+body{
+    font-family: 'Nunito', sans-serif; 
+}
