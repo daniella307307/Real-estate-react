@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
         enum: ['tenant', 'realtor'], 
         default: 'tenant',
       },
+      bio:{
+        type: String,
+        minlength: 10,
+      },
       date: {
         type: Date,
         default: Date.now,
