@@ -3,32 +3,37 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 function Navbar() {
-  const [user, setUser] = useState(null);
+  const { id } = useParams(); // Retrieve the dynamic ID from the URL
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    role: "",
+    password: "",
+    avatar: null,
+  });
   const showProfile = ()=>{
-    window.Location.href = '/profile'
+    window.location.href = '/profile'
   }
   useEffect(() => {
     // Check if there's an authentication token in localStorage
-    const authToken = localStorage.getItem('authToken');
+    const authToken = localStorage.getItem("authToken");
+
     if (authToken) {
-      // Fetch user info from your API (replace with your actual endpoint)
-     axios
-        .get('http://localhost:8080/api/v1/user/', {
+      // Dynamically pass the ID in the URL
+      axios
+        .get(`http://localhost:8080/api/v1/user/${id}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         })
         .then((response) => {
-          setUser({
-            name: response.data.name,
-            role:response.data.role,
-            avatar: response.avatar || null, 
-          });
+          setUser(response.data);
         })
         .catch((error) => {
-          console.error('Error fetching user data', error);
+          console.error("Error fetching user data", error);
         });
     }
-  }, []);
+  }, [id]);
 
   const handleSubmit = () => {
     window.location.pathname = '/login';
@@ -39,15 +44,16 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    // Clear the authentication token and reset the user state
+  
     localStorage.removeItem('authToken');
+    localStorage.clear();
     setUser(null);
-    window.location.pathname = '/';
+    window.location.pathname = '/login';
   };
 
   return (
-    <div className='w-[100vw] h-[15vh]'>
-      <div className='p-[2em]'>
+    <div className='overflow-x-hidden'>
+      <div className='my-2'>
         <nav className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faHomeLg} className='text-[2em] text-orange-300' />
@@ -65,13 +71,13 @@ function Navbar() {
           <div className='flex items-center gap-4'>
             {user ? (
               <>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-2'  onClickCapture={showProfile}>
                   <img
                     src={user.avatar || 'https://via.placeholder.com/40'} // Default avatar if no avatar is set
                     alt='Profile'
                     className='w-10 h-10 rounded-full'
                   />
-                 <div className='items-center justify-between' onClickCapture={showProfile}>
+                 <div className='items-center justify-between'>
                  <h1 className='text-black text-[.5em]'>{user.name}</h1>
                  <h1 className='text-black text-[.5em]'>{user.role}</h1>
                  </div>

@@ -37,18 +37,8 @@ function LoginScreen() {
       // Check if login was successful and store token
       if (result.data.token) {
         localStorage.setItem('authToken', result.data.token);
-
-        // If rememberMe is checked, store email and password in localStorage
-        // if (rememberMe) {
-        //   localStorage.setItem("rememberedEmail", email);
-        //   localStorage.setItem("rememberedPassword", password);
-        // } else {
-        //   localStorage.removeItem("rememberedEmail");
-        //   localStorage.removeItem("rememberedPassword");
-        // }
-
         alert(result.data.message);
-        window.location.href = '/'; // Redirect to homepage or dashboard
+        window.location.href = '/'; 
       } else {
         alert('Login failed. Please try again.');
       }

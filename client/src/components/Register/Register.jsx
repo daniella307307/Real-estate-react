@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function Register() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -27,6 +28,7 @@ function Register() {
       // Check if registration was successful and store token
       if (result.data.token) {
         localStorage.setItem('authToken', result.data.token);
+        Cookies.set('authToken', result.data.token, { expires: 1 }); 
         alert('Registration successful!');
         window.location.href = '/'; // Redirect to homepage or dashboard
       } else {
